@@ -1,0 +1,115 @@
+{
+  "extends": [
+    "tslint-consistent-codestyle",
+    "tslint-config-airbnb",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
+  "linterOptions": {
+    "exclude": ["webpack.config.*"]
+  },
+  "rules": {
+    "import-name": false,
+    "no-parameter-reassignment": false,
+    "no-shadowed-variable": false,
+    "member-ordering": false,
+    "object-literal-sort-keys": false,
+    "no-else-after-return": false,
+    "object-shorthand-properties-first": false,
+    "jsx-no-lambda": false,
+
+    // deprecated as of Typescript v2.9
+    "no-unused-variable": false,
+    "no-accessor-recursion": true,
+    "prefer-const-enum": true,
+
+    "readonly-keyword": false,
+    "readonly-array": false,
+    "no-let": false,
+    "no-object-mutation": false,
+    "no-delete": false,
+    "no-expression-statement": false,
+
+    "early-exit": false,
+    "naming-convention": [
+      // must be re-enabled one-by-one. Some of these rules override each other (for edge-cases)
+      true
+      // forbid leading and trailing underscores and enforce camelCase on EVERY name. will be overridden by subtypes if needed
+      // { "type": "default", "format": "camelCase", "leadingUnderscore": "forbid", "trailingUnderscore": "forbid" },
+      // require all global constants to be camelCase or UPPER_CASE
+      // all other variables and functions still need to be camelCase
+      // { "type": "variable", "modifiers": ["global", "const"], "format": ["camelCase", "UPPER_CASE"] },
+      // override the above format option for exported constants to allow only UPPER_CASE
+      // { "type": "variable", "modifiers": ["export", "const"], "format": "UPPER_CASE" },
+      // require exported constant variables that are initialized with functions to be camelCase
+      // { "type": "functionVariable", "modifiers": ["export", "const"], "format": "camelCase" },
+      // allow leading underscores for unused parameters, because `tsc --noUnusedParameters` will not flag underscore prefixed parameters
+      // all other rules (trailingUnderscore: forbid, format: camelCase) still apply
+      // { "type": "parameter", "modifiers": "unused", "leadingUnderscore": "allow" },
+      // require leading underscores for private properties and methods, all other rules still apply
+      // { "type": "member", "modifiers": "private", "leadingUnderscore": "require" },
+      // same for protected
+      // { "type": "member", "modifiers": "protected", "leadingUnderscore": "require" },
+      // exclicitly disable the format check only for method toJSON
+      // { "type": "method", "filter": "^toJSON$", "format": null },
+      // enforce UPPER_CASE for all public static readonly(!) properties
+      // { "type": "property", "modifiers": ["public", "static", "const"], "format": "UPPER_CASE" },
+      // enforce PascalCase for classes, interfaces, enums, etc. Remember, there are still no underscores allowed.
+      // { "type": "type", "format": "PascalCase" },
+      // abstract classes must have the prefix "Abstract". The following part of the name must be valid PascalCase
+      // { "type": "class", "modifiers": "abstract", "prefix": "Abstract" },
+      // generic type parameters must start with "T"
+      // most of the time it will only be T, which is totally valid, because an empty string conforms to the PascalCase check
+      // By convention T, U and V are used for generics. You could enforce that with "regex": "^[TUV]$" and if you are care that much for performance, you could disable every other check by setting a falsy value
+      // { "type": "genericTypeParameter", "prefix": "T" },
+      // enum members must be in PascalCase. Without this config, enumMember would inherit UPPER_CASE from public static const property
+      // { "type": "enumMember", "format": "PascalCase" }
+    ], // needs to be configured properly
+    "no-collapsible-if": false,
+    "no-return-undefined": false,
+    "no-static-this": false,
+    "no-unnecessary-else": false,
+    "no-var-before-return": true,
+    "parameter-properties": [
+      true // must be re-enabled one-by-one
+      // "all-or-none",
+      // "readonly"
+    ],
+
+    "no-this": false,
+    // we need classes at least for redux actions
+    "no-class": false,
+    // we need mixed interfaces for Props interfaces
+    "no-mixed-interface": false,
+    // method syntax is shorter and no downsides
+    "no-method-signature": false,
+    // in many cases `if` statement is more readable than ternary
+    "no-if-statement": false,
+    // do not change
+    "completed-docs": false,
+    "max-classes-per-file": false,
+    "no-implicit-dependencies": false,
+    "import-blacklist": [true, "lodash"],
+    "no-namespace": [true, "allow-declarations"],
+    "interface-name": [true, "never-prefix"],
+    "only-arrow-functions": [true, "allow-named-functions"],
+    "prefer-method-signature": true,
+    "arrow-return-shorthand": [true, "multiline"],
+    "member-access": [true, "no-public"],
+    "variable-name": [
+      true,
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case"
+    ],
+    "array-type": [true, "array-simple"],
+    "no-non-null-assertion": false,
+    "no-unnecessary-type-assertion": false,
+
+    // turned off in favor of Action class syntax
+    "no-parameter-properties": false,
+
+    // conflicting with prettier
+    "ter-computed-property-spacing": false
+  }
+}
