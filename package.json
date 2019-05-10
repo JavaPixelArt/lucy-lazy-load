@@ -2,18 +2,43 @@
   "name": "lusy-lazy-load",
   "version": "1.0.0",
   "scripts": {
+    "lint:js": "tslint -p 'client/src/**/*.ts{,x}'",
+    "lint:js:fix": "npm run lint:js -- --fix",
+    "lint:styles": "stylelint 'client/src/**/*.scss'",
+    "lint:styled-components": "stylelint --config '.stylelintrc.styled-components.json' client/src/**/*.ts{,x}",
+    "lint": "concurrently \"npm run lint:js\" \"npm run lint:styles\" \"npm run lint:styled-components\"",
+    "code-format:check": "prettier -l '**/*.{ts,tsx,json,md,js,scss}'",
+    "code-format:fix": "prettier --write '**/*.{ts,tsx,json,md,js,scss}'",
+    "test": "react-scripts test --env=jsdom",
+    "start": "cd server && node server.js",
+    "server": "cd server && nodemon server.js",
     "client": "cd client && yarn start",
-    "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "start": "node server.js",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "dependencies": {
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.13.4",
+    "@types/react": "^16.8.13",
+    "@types/react-dom": "^16.8.4",
     "@types/styled-components": "^4.1.14",
+    "babel-register": "^6.26.0",
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "node-fetch": "^2.3.0",
+    "tslint": "^5.15.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^4.0.0",
+    "typescript": "^3.4.3",
+    "universal-config": "^0.3.0",
+    "unsplash-js": "^5.0.0"
   },
   "devDependencies": {
-    "concurrently": "^4.0.1"
+    "concurrently": "^4.0.1",
+    "nodemon": "^1.18.11",
+    "prettier": "1.17.0",
+    "stylelint": "^9.9.0",
+    "tslint-consistent-codestyle": "^1.14.1"
   }
 }

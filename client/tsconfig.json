@@ -15,5 +15,5 @@
     "noEmit": true,
     "jsx": "preserve"
   },
-  "include": ["src", "images.d.ts"]
+  "include": ["src"]
 }
