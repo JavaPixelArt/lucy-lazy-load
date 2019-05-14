@@ -1,5 +1,5 @@
 export interface ImageType {
   id: string
-  urls: { regular: string }
+  urls: { thumb: string; full: string }
   description: string
 }

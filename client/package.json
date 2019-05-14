@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "cancelable-promise": "^2.4.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-intersection-observer": "^8.23.0",

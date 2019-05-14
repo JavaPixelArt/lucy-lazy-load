@@ -6,8 +6,10 @@ import Image from '../Image'
 
 import { ImageType } from '../types'
 
+import { ImagesWrapper } from './Image.styled'
+
 const START = 1
-const NUMBER = 30
+const NUMBER = 3
 
 const Images = () => {
   const [state, setState] = useReducer(
@@ -46,13 +48,17 @@ const Images = () => {
   }, [inView])
 
   return (
-    <>
+    <ImagesWrapper>
       {state.images.map((image: ImageType) => (
-        <Image key={image.id} image={image} />
+        <Image
+          key={image.id}
+          src={image.urls.full}
+          placeholderSrc={image.urls.thumb}
+          alt={image.description}
+        />
       ))}
-      <div ref={ref} />
-      {state.isLoading && <h1>loading...</h1>}
-    </>
+      <h1 ref={ref}>{state.isLoading ? '. . .' : ''}</h1>
+    </ImagesWrapper>
   )
 }
 
