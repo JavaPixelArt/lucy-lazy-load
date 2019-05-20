@@ -41,7 +41,7 @@ const Images = () => {
   }, [])
 
   useEffect(() => {
-    if (state.numberViewed && state.numberViewed + 1 === state.images.length) {
+    if (state.numberViewed && state.numberViewed + 1 >= state.images.length) {
       fetchData(1)
     }
   }, [state.numberViewed])
