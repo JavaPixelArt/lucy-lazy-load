@@ -1,6 +1,5 @@
 import axios from 'axios'
-import React, { useRef, useReducer, useEffect } from 'react'
-import { useInView } from 'react-intersection-observer'
+import React, { useReducer, useEffect } from 'react'
 
 import Image from '../Image'
 
@@ -8,56 +7,57 @@ import { ImageType } from '../types'
 
 import { ImagesWrapper } from './Image.styled'
 
-const START = 1
-const NUMBER = 3
-
 const Images = () => {
   const [state, setState] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
       images: [],
       isLoading: false,
+      numberViewed: 0,
     },
   )
 
-  const [ref, inView] = useInView({
-    threshold: 1,
-  })
-
-  useEffect(() => {
-    const { images, isLoading } = state
-
-    if (!inView || isLoading) return
+  const fetchData = async (number: number) => {
+    const { images } = state
 
     setState({ isLoading: true })
 
-    const fetchData = async () => {
-      const { images } = state
-      const result = await axios.get(
-        `/api/photos?count=${NUMBER}&start=${START + images.length}`,
-      )
+    const result = await axios.get(
+      `/api/photos?count=${number}&start=${1 + images.length}`,
+    )
 
-      setState({
-        images: [...images, ...result.data],
-        isLoading: false,
-        loaded: images.length + result.data.length,
-      })
+    setState({
+      images: [...images, ...result.data],
+      isLoading: false,
+    })
+  }
+
+  const handleView = (index: number) => {
+    setState({ numberViewed: Math.max(index + 1, state.numberViewed) })
+  }
+
+  useEffect(() => {
+    fetchData(3)
+  }, [])
+
+  useEffect(() => {
+    if (state.numberViewed && state.numberViewed + 1 === state.images.length) {
+      fetchData(1)
     }
-
-    fetchData()
-  }, [inView])
+  }, [state.numberViewed])
 
   return (
     <ImagesWrapper>
-      {state.images.map((image: ImageType) => (
+      {state.images.map((image: ImageType, index: number) => (
         <Image
           key={image.id}
+          index={index}
           src={image.urls.full}
           placeholderSrc={image.urls.thumb}
           alt={image.description}
+          onView={handleView}
         />
       ))}
-      <h1 ref={ref}>{state.isLoading ? '. . .' : ''}</h1>
     </ImagesWrapper>
   )
 }

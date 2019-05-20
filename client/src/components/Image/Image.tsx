@@ -1,5 +1,6 @@
 import PCancelable from 'cancelable-promise'
-import React, { useReducer, useEffect } from 'react'
+import React, { useReducer, useEffect, Ref } from 'react'
+import { useInView } from 'react-intersection-observer'
 
 import loadImagePromise from '../utils/loadImage'
 
@@ -7,13 +8,23 @@ import { ImageWrapper } from './Image.styled'
 
 interface Props {
   src: string
-  placeholderSrc?: string
+  index: number
   alt?: string
+  placeholderSrc?: string
+  onView(index: number): void
   onError?(): void
   onLoaded?(): void
 }
 
-const Image = ({ src, placeholderSrc, alt, onError, onLoaded }: Props) => {
+const Image = ({
+  src,
+  placeholderSrc,
+  alt,
+  onError,
+  onLoaded,
+  onView,
+  index,
+}: Props) => {
   const [state, setState] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -22,6 +33,10 @@ const Image = ({ src, placeholderSrc, alt, onError, onLoaded }: Props) => {
     },
   )
 
+  const [ref, inView] = useInView({
+    threshold: 0.5,
+  })
+
   let loadingPromise: PCancelable.CancelablePromise<{
     status: 'Image is loaded' | 'Image load error'
   }>
@@ -29,6 +44,10 @@ const Image = ({ src, placeholderSrc, alt, onError, onLoaded }: Props) => {
   useEffect(() => {
     loadImage()
   }, [])
+
+  useEffect(() => {
+    if (inView) onView(index)
+  }, [inView])
 
   useEffect(() => {
     setState({
@@ -72,7 +91,11 @@ const Image = ({ src, placeholderSrc, alt, onError, onLoaded }: Props) => {
   return state.imageError && placeholderSrc ? (
     <ImageWrapper alt={alt} src={placeholderSrc} />
   ) : (
-    <ImageWrapper alt={alt} src={state.imageLoaded ? src : placeholderSrc} />
+    <ImageWrapper
+      ref={ref}
+      alt={alt}
+      src={state.imageLoaded ? src : placeholderSrc}
+    />
   )
 }
 
